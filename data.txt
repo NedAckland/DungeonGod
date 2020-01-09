@@ -1,0 +1,1 @@
+{"player_info": {"name": "den", "class": "thief", "race": "no race", "id": 225828301288112128}}

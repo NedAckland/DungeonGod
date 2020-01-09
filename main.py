@@ -3,7 +3,7 @@ import json
 from discord.ext import commands
 
 # client = discord.Client()
-TOKEN = 'NjY0MjU2ODY4NTQ1NDYyMzAz.XhZ9IA.BFnt5k_a3LhSatFtVWvnN3ZptTA'
+TOKEN = 'NjY0MjU2ODY4NTQ1NDYyMzAz.XhbQAQ.fS5lpcKJeh2pwXKcpXaZUe_qRT0'
 
 client = commands.Bot(command_prefix='-')
 
@@ -40,10 +40,15 @@ class playerClass:
     class_is = 'no class'
     race = 'no race'
 
+
+
     data = {
         'name': name,
         'class': class_is,
         'race': race
+    }
+    player = {
+        'player_info': data
     }
     warrior = {
         'attack': 10,
@@ -64,18 +69,21 @@ async def on_message(message):
     channel = message.channel
     mc = message.content
     pc = playerClass
-    if mc.startswith('-class'):
-        await channel.send('choose class:\nwarrior\nthief')
+    if pc.data.get('class') == 'no class':
+        if mc.startswith('-class'):
+            await channel.send('choose class:\nwarrior\nthief')
 
-        def check(m):
-            return m.content == 'warrior' or \
-                   m.content == 'thief' and m.channel == channel
+            def check(m):
+                return m.content == 'warrior' or \
+                       m.content == 'thief' and m.channel == channel
 
-        msg = await client.wait_for('message', check=check)
-        await channel.send('chosen {.content} class!'.format(msg))
-        a = msg.content
-        pc.data['class'] = a
-        print(pc.data)
+            msg = await client.wait_for('message', check=check)
+            await channel.send('chosen {.content} class!'.format(msg))
+            a = msg.content
+            pc.data['class'] = a
+            print(pc.data)
+    # if pc.data.get('class') == 'warrior':
+    #     await channel.send("class has all ready been set")
     if mc.startswith('-name'):
         await channel.send('choose name:')
         msg = await client.wait_for('message')
@@ -83,7 +91,7 @@ async def on_message(message):
         a = msg.content
         pc.data['id'] = msg.author.id
         pc.data['name'] = a
-        print(pc.data)
+        print(pc.player)
 
     if mc.startswith('-get class'):
         await channel.send(pc.data.get('class'))
@@ -98,6 +106,9 @@ async def on_message(message):
             await channel.send(pc.thief)
         if pc.data.get('class') == 'no class':
             await channel.send("need to pick a class to get stats")
+
+    with open('data.txt', 'w') as outfile:
+        json.dump(pc.player, outfile)
 
 @client.event
 async def on_ready():
