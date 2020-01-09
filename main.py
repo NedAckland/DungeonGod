@@ -3,7 +3,7 @@ import json
 from discord.ext import commands
 
 # client = discord.Client()
-TOKEN = 'NjY0MjU2ODY4NTQ1NDYyMzAz.XhbQAQ.fS5lpcKJeh2pwXKcpXaZUe_qRT0'
+TOKEN = 'N/A'
 
 client = commands.Bot(command_prefix='-')
 
